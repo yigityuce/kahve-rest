@@ -1,0 +1,51 @@
+{
+	"typescript.tsdk": "node_modules/typescript/lib/",
+	"editor.tabSize": 4,
+	"editor.insertSpaces": false,
+	"editor.renderWhitespace": "all",
+	"editor.detectIndentation": false,
+	"editor.formatOnSave": false,
+	"editor.defaultFormatter": "esbenp.prettier-vscode",
+	"[javascript]": {
+		"editor.formatOnSave": true
+	},
+	"[typescript]": {
+		"editor.formatOnSave": true
+	},
+	"[json]": {
+		"editor.formatOnSave": true
+	},
+	"search.exclude": {
+		"**/.git": true,
+		"**/.svn": true,
+		"**/.hg": true,
+		"**/CVS": true,
+		"**/.DS_Store": true,
+		"compiled": true,
+		"dist": true,
+		"build": true,
+		"server": true,
+		"dll": true,
+		"docs": true,
+		"node_modules": true
+	},
+	"files.exclude": {
+		"**/.git": true,
+		"**/.svn": true,
+		"**/.hg": true,
+		"**/CVS": true,
+		"**/.DS_Store": true,
+		"compiled": true,
+		"dist": true,
+		"build": true,
+		"server": true,
+		"dll": true,
+		"node_modules": true
+	},
+	"eslint.lintTask.options": "--ext .js,.ts .",
+	"eslint.probe": ["javascript", "typescript"],
+	"eslint.enable": true,
+	"tslint.alwaysShowRuleFailuresAsWarnings": false,
+	"tslint.configFile": "./tslint.json",
+	"tslint.ignoreDefinitionFiles": true
+}

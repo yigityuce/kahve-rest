@@ -1,0 +1,8 @@
+{
+	"mode": "file",
+	"out": "./docs",
+	"stripInternal": true,
+	"disableSources": true,
+	"exclude": "**/*+(index|.spec|.e2e).ts",
+	"readme": "./README.md"
+}
