@@ -1,6 +1,6 @@
 import * as express from 'express';
 import * as cors from 'cors';
-import { annotationProcessor } from './internals';
+import { DecoratorProcessor } from './internals';
 
 export abstract class RestApp {
 	private readonly controllers: any[];
@@ -13,7 +13,7 @@ export abstract class RestApp {
 	}
 
 	protected listen(port: number): void {
-		annotationProcessor.process(this.app);
+		new DecoratorProcessor(this.app).process();
 		this.app.listen(port, () => this.onStart());
 	}
 

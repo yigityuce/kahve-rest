@@ -1,5 +1,6 @@
 lib/
 .vscode/
+.docs/
 .editorconfig
 .eslintignore
 .elintrc.json

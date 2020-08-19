@@ -4,6 +4,7 @@ import { MethodArg, MethodArgType } from '../types/Kahve/Rest';
 
 /**
  * Method argument annotation to get path variable from the request with key
+ *
  * @param key - Path variable name which is defined on the path with leading colon
  *
  * @example
@@ -22,12 +23,7 @@ import { MethodArg, MethodArgType } from '../types/Kahve/Rest';
  */
 export function PathVariable(key: string): Types.ParameterAnnotationReturnType {
 	return (obj: any, func: string, position: number): void => {
-		const arg = new MethodArg({
-			position,
-			required: true,
-			type: MethodArgType.PATH_VARIABLE,
-			config: { key }
-		});
+		const arg = new MethodArg(position, MethodArgType.PATH_VARIABLE, { key }, true);
 		RestAppManager.addMethodArg(Helper.getClassName(obj), func, arg);
 	};
 }

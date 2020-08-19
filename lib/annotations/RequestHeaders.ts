@@ -21,10 +21,7 @@ import { MethodArg, MethodArgType } from '../types/Kahve/Rest';
  */
 export function RequestHeaders(): Types.ParameterAnnotationReturnType {
 	return (obj: any, func: string, position: number): void => {
-		const arg = new MethodArg({
-			position,
-			type: MethodArgType.REQUEST_HEADER
-		});
+		const arg = new MethodArg(position, MethodArgType.REQUEST_HEADER, {}, false);
 		RestAppManager.addMethodArg(Helper.getClassName(obj), func, arg);
 	};
 }

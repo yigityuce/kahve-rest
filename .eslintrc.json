@@ -194,7 +194,7 @@
 				"format": ["UPPER_CASE", "PascalCase"]
 			}, {
 				"selector": "property",
-				"format": ["camelCase", "PascalCase", "snake_case"],
+				"format": ["camelCase", "UPPER_CASE", "PascalCase", "snake_case"],
 				"leadingUnderscore": "allow"
 			}
 		],

@@ -4,6 +4,7 @@ import { MethodArg, MethodArgType } from '../types/Kahve/Rest';
 
 /**
  * Method argument annotation to get query parameter from the request with key
+ *
  * @param key - Query parameter key
  * @param required - define is query required or not. It will be validated automatically when request is received. If it
  * does not pass the validation, automatic error response will be generated
@@ -24,12 +25,7 @@ import { MethodArg, MethodArgType } from '../types/Kahve/Rest';
  */
 export function QueryParam(key: string, required: boolean = false): Types.ParameterAnnotationReturnType {
 	return (obj: any, func: string, position: number): void => {
-		const arg = new MethodArg({
-			position,
-			required,
-			type: MethodArgType.QUERY_PARAM,
-			config: { key }
-		});
+		const arg = new MethodArg(position, MethodArgType.QUERY_PARAM, { key }, required);
 		RestAppManager.addMethodArg(Helper.getClassName(obj), func, arg);
 	};
 }
