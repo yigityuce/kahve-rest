@@ -2,8 +2,6 @@
 - [Installation](#installation)
 - [Usage](#usage)
 
-PR pipeline test
-
 # Description
 
 Annotation based, Java Spring like, REST library
