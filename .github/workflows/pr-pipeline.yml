@@ -20,6 +20,6 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node }}
-    - run: npm i --ignore-scripts
+    - run: npm i
     - run: npm run clean
     - run: npm run build
