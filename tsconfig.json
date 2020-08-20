@@ -8,6 +8,7 @@
 		"emitDecoratorMetadata": true,
 		"experimentalDecorators": true,
 		"allowSyntheticDefaultImports": true,
+		"noImplicitAny": false,
 		"sourceMap": false,
 		"importHelpers": true,
 		"strictNullChecks": false,

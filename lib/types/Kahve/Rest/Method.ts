@@ -1,6 +1,16 @@
 import { MethodArg, MethodArgType } from './MethodArg';
 import { RestAppManager } from '../../../internals';
-import { HttpMethod } from './HttpMethod';
+
+/**
+ * Available HTTP methods to be used to register REST endpoint.
+ * @internal
+ */
+export enum HttpMethod {
+	GET = 'GET',
+	POST = 'POST',
+	PUT = 'PUT',
+	DELETE = 'DELETE'
+}
 
 /**
  * Method type which will be stored in the controller.
