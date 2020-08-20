@@ -21,7 +21,7 @@ export class Method {
 
 	constructor(
 		public name: string,
-		public httpMethod: HttpMethod,
+		public httpMethod: HttpMethod | string,
 		public path: string,
 		public handler: Function,
 		public args: MethodArg[]

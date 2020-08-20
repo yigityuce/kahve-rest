@@ -1,6 +1,5 @@
 import { Types } from 'kahve-core';
 import { Helper } from '../internals';
-import { HttpMethod } from '../types/Kahve/rest';
 
 /**
  * Method annotation to register the method as a handler of http **GET** request
@@ -23,5 +22,5 @@ import { HttpMethod } from '../types/Kahve/rest';
  * ```
  */
 export function RestGet(path?: string): Types.MethodAnnotationReturnType {
-	return Helper.httpMethodAnnotationGenerator(HttpMethod.GET, path);
+	return Helper.httpMethodAnnotationGenerator('GET', path);
 }
