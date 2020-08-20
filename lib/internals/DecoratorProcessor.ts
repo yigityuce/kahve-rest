@@ -152,7 +152,6 @@ export class DecoratorProcessor {
 	 * @param path request path
 	 */
 	private getAsRestError(error: any, path: string): RestError {
-		console.log(error);
 		if (error instanceof RestError) return error.setPath(path);
 		if (error instanceof Error) return new RestError(error.message).setPath(path);
 		return new RestError('Internal server error occured').setPath(path);
