@@ -9,6 +9,7 @@ export class RestError extends Error {
 
 	constructor(message: string, public code: number = HttpStatus.INTERNAL_SERVER_ERROR, public path: string = '', public data?: any) {
 		super(message);
+		Object.setPrototypeOf(this, RestError.prototype);
 	}
 
 	/**
