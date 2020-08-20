@@ -2,30 +2,13 @@ import { MethodArg, MethodArgType } from './MethodArg';
 import { RestAppManager } from '../../../internals';
 
 /**
- * Available HTTP methods to be used to register REST endpoint.
- * @internal
- */
-export enum HttpMethod {
-	GET = 'GET',
-	POST = 'POST',
-	PUT = 'PUT',
-	DELETE = 'DELETE'
-}
-
-/**
  * Method type which will be stored in the controller.
  * @internal
  */
 export class Method {
 	private id: number = RestAppManager.AUTO_INCREMENT_ID++;
 
-	constructor(
-		public name: string,
-		public httpMethod: HttpMethod | string,
-		public path: string,
-		public handler: Function,
-		public args: MethodArg[]
-	) {}
+	constructor(public name: string, public httpMethod: string, public path: string, public handler: Function, public args: MethodArg[]) {}
 
 	/**
 	 * Retrieves method arg with position.
