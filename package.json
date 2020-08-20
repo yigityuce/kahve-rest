@@ -13,7 +13,7 @@
 	"scripts": {
 		"clean": "npm run rimraf -- dist",
 		"build": "npm run tsc -- --project tsconfig.json",
-		"prepublish": "npm run lint && npm run clean && npm run build",
+		"prepare": "npm run lint && npm run clean && npm run build",
 		"postpublish": "npm run doc",
 		"lint:tslint": "npm run tslint -- --project tsconfig.json",
 		"lint:eslint": "npm run eslint -- \"**/*.ts\"",

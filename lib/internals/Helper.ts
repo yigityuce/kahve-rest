@@ -1,4 +1,4 @@
-import { HttpMethod, Method } from '../types/Kahve/Rest';
+import { Method } from '../types/Kahve/Rest';
 import { Types } from 'kahve-core';
 import { RestAppManager } from './RestAppManager';
 
@@ -12,7 +12,7 @@ export class Helper {
 	 * @param httpMethod - http method to be generated as annotation
 	 * @param path - request path to be bound
 	 */
-	public static httpMethodAnnotationGenerator(httpMethod: HttpMethod, path?: string): Types.MethodAnnotationReturnType {
+	public static httpMethodAnnotationGenerator(httpMethod: string, path?: string): Types.MethodAnnotationReturnType {
 		return (obj: any, name: string, descriptor: PropertyDescriptor): PropertyDescriptor => {
 			Object.defineProperty(obj, name, descriptor);
 			RestAppManager.addMethod(Helper.getClassName(obj), new Method(name, httpMethod, path, descriptor.value, null));
