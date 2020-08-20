@@ -1,6 +1,6 @@
 import { Types } from 'kahve-core';
 import { Helper } from '../internals';
-import { HttpMethod } from '../types/Kahve/rest';
+import { HttpMethod } from '../types/Kahve/rest/Method';
 
 /**
  * Method annotation to register the method as a handler of http **GET** request
