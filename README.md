@@ -18,7 +18,7 @@ $ npm install kahve-core kahve-rest
 
 # Usage
 
-See the example below:
+See the example below and you can find a postman collection within **"*/example*"** directory to test the code below.
 
 ```ts
 import { RestApp, RestController, RestGet, RestPost, RequestBody, RestPut, PathVariable, RestError, RestDelete } from 'kahve-rest';

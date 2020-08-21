@@ -1,0 +1,124 @@
+{
+	"info": {
+		"_postman_id": "174d18ea-a22f-44dd-a960-19e0296a63e5",
+		"name": "Kahve-Rest",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "get-list",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/base/path/get-list",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"base",
+						"path",
+						"get-list"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get-list-with-timeout",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/base/path/get-list-with-timeout",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"base",
+						"path",
+						"get-list-with-timeout"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "add-item",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "yigit"
+				},
+				"url": {
+					"raw": "localhost:8080/base/path/add-item",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"base",
+						"path",
+						"add-item"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "update-item",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "JOHN"
+				},
+				"url": {
+					"raw": "localhost:8080/base/path/update-item/10",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"base",
+						"path",
+						"update-item",
+						"10"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "delete-item",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "localhost:8080/base/path/delete-item/1",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"base",
+						"path",
+						"delete-item",
+						"1"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}
