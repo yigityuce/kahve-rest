@@ -1,5 +1,5 @@
 import { MethodArg, MethodArgType } from './MethodArg';
-import { RestAppManager } from '../../../internals';
+import { RestAppManager, UniqueList } from '../../../internals';
 
 /**
  * Method type which will be stored in the controller.
@@ -7,8 +7,9 @@ import { RestAppManager } from '../../../internals';
  */
 export class Method {
 	private id: number = RestAppManager.AUTO_INCREMENT_ID++;
+	private args: UniqueList<MethodArg> = new UniqueList<MethodArg>('position');
 
-	constructor(public name: string, public httpMethod: string, public path: string, public handler: Function, public args: MethodArg[]) {}
+	constructor(public name: string, public httpMethod: string, public path: string, public handler: Function) {}
 
 	/**
 	 * Retrieves method arg with position.
@@ -16,30 +17,30 @@ export class Method {
 	 * @param position argument index to be retrieved
 	 */
 	public getArg(position: number): MethodArg {
-		return (this.args || []).find(a => a.position === position);
+		return this.args.get(position);
 	}
 
 	/**
-	 * Checks the method arg is in list
-	 *
-	 * @param position argument index to be retrieved
+	 * Get all method args defined as a list.
 	 */
-	public isArgExist(position: number): boolean {
-		return (this.args || []).findIndex(c => c.position === position) >= 0;
+	public getArgs(): MethodArg[] {
+		return this.args.getAll();
 	}
 
 	/**
 	 * Get all methods args with the argument type like QUERY_PARAM, PATH_VARIABLE etc.
 	 */
 	public getArgsByType(type: MethodArgType): MethodArg[] {
-		return (this.args || []).filter(c => c.type === type);
+		const args = this.args.getAll();
+		return args.filter(c => c.type === type);
 	}
 
 	/**
 	 * Get the max possible argument position.
 	 */
 	public getMaxArgPosition(): number {
-		const positionList = (this.args || []).map(a => a.position);
+		const args = this.args.getAll();
+		const positionList = args.map(a => a.position);
 		return positionList.length ? Math.max(...positionList) : 0;
 	}
 
@@ -48,36 +49,7 @@ export class Method {
 	 * @param a method argument
 	 */
 	public addMethodArg(a: MethodArg): this {
-		if (!this.isArgExist(a.position)) this.insertMethodArg(a);
-		else this.updateMethodArg(a);
-		return this;
-	}
-
-	/**
-	 * Inserts method arg to the list in controller.
-	 * @param a method arg
-	 */
-	private insertMethodArg(a: MethodArg): this {
-		if (a instanceof MethodArg) {
-			if (!Array.isArray(this.args)) this.args = [];
-			this.args.push(a);
-		}
-		return this;
-	}
-
-	/**
-	 * Updates method arg with coping the values.
-	 * @param a method arg
-	 */
-	private updateMethodArg(a: MethodArg): this {
-		const foundIndex = (this.args || []).findIndex(arg => arg.position === a.position);
-
-		if (foundIndex >= 0) {
-			Object.entries(a)
-				.filter(([, value]) => value)
-				.forEach(([key, value]) => (this.args[foundIndex][key] = value));
-		}
-
+		this.args.add(a);
 		return this;
 	}
 }

@@ -1,6 +1,6 @@
 import { GlobalVariableHelper } from 'kahve-core';
 import { Kahve } from '../types';
-import { App, Controller, Method } from '../types/Kahve/Rest';
+import { App, Server, Controller, Method, ServerController, RestServerConfigTypes, ServerConfig } from '../types/Kahve/Rest';
 
 /**
  * Global variable manager class implementation.
@@ -25,10 +25,51 @@ export class RestAppManager {
 	}
 
 	/**
+	 * Adds server to the app instance.
+	 *
+	 * @param sname server name
+	 * @param instance instance of the server
+	 */
+	public static addServer(sname: string, instance: any): void {
+		RestAppManager.app().addServer(new Server(sname, instance));
+	}
+
+	/**
+	 * Adds controller name to the server.
+	 *
+	 * @param sname server name
+	 * @param propertyName propertyname
+	 */
+	public static addServerController(sname: string, propertyName: string): void {
+		RestAppManager.app().addServer(new Server(sname, null)).getServer(sname).addController(new ServerController(propertyName, null));
+	}
+
+	/**
+	 * Adds controller property name to the server.
+	 *
+	 * @param sname server name
+	 * @param propertyName propertyname
+	 */
+	public static addServerConfig(sname: string, key: RestServerConfigTypes, propertyName: string): void {
+		RestAppManager.app().addServer(new Server(sname, null)).getServer(sname).addConfig(new ServerConfig(key, propertyName, null));
+	}
+
+	/**
+	 * Adds lifecycle method to the server.
+	 *
+	 * @param sname server name
+	 * @param method lifecycle method definition
+	 */
+	public static addServerLifecycleMethod(sname: string, method: Kahve.Rest.ServerLifecycleMethod): void {
+		RestAppManager.app().addServer(new Server(sname, null)).getServer(sname).addLifecycleMethod(method);
+	}
+
+	/**
 	 * Adds controller to the app instance.
 	 *
 	 * @param cname controller name
 	 * @param baseUrl base url of the controller
+	 * @param instance instance of the server
 	 */
 	public static addController(cname: string, baseUrl: string, instance: any): void {
 		RestAppManager.app().addController(new Controller(cname, baseUrl, instance));
@@ -55,7 +96,7 @@ export class RestAppManager {
 		RestAppManager.app()
 			.addController(new Controller(cname, null, null))
 			.getController(cname)
-			.addMethod(new Method(mname, null, null, null, null))
+			.addMethod(new Method(mname, null, null, null))
 			.getMethod(mname)
 			.addMethodArg(arg);
 	}
