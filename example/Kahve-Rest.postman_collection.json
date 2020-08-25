@@ -11,11 +11,11 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "localhost:8080/base/path/get-list",
+					"raw": "localhost:9000/base/path/get-list",
 					"host": [
 						"localhost"
 					],
-					"port": "8080",
+					"port": "9000",
 					"path": [
 						"base",
 						"path",
@@ -31,11 +31,11 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "localhost:8080/base/path/get-list-with-timeout",
+					"raw": "localhost:9000/base/path/get-list-with-timeout",
 					"host": [
 						"localhost"
 					],
-					"port": "8080",
+					"port": "9000",
 					"path": [
 						"base",
 						"path",
@@ -55,11 +55,11 @@
 					"raw": "yigit"
 				},
 				"url": {
-					"raw": "localhost:8080/base/path/add-item",
+					"raw": "localhost:9000/base/path/add-item",
 					"host": [
 						"localhost"
 					],
-					"port": "8080",
+					"port": "9000",
 					"path": [
 						"base",
 						"path",
@@ -79,11 +79,11 @@
 					"raw": "JOHN"
 				},
 				"url": {
-					"raw": "localhost:8080/base/path/update-item/10",
+					"raw": "localhost:9000/base/path/update-item/10",
 					"host": [
 						"localhost"
 					],
-					"port": "8080",
+					"port": "9000",
 					"path": [
 						"base",
 						"path",
@@ -104,11 +104,11 @@
 					"raw": ""
 				},
 				"url": {
-					"raw": "localhost:8080/base/path/delete-item/1",
+					"raw": "localhost:9000/base/path/delete-item/1",
 					"host": [
 						"localhost"
 					],
-					"port": "8080",
+					"port": "9000",
 					"path": [
 						"base",
 						"path",

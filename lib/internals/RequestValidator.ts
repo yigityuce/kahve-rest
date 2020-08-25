@@ -17,7 +17,7 @@ export class RequestValidator {
 	 * @throws RestError if validation fails
 	 */
 	public validate(): void {
-		(this.method.args || []).forEach(arg => {
+		this.method.getArgs().forEach(arg => {
 			if (arg.type === MethodArgType.QUERY_PARAM) this.validateQueryParam(arg);
 			if (arg.type === MethodArgType.REQUEST_BODY) this.validateRequestBody(arg);
 		});

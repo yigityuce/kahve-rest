@@ -15,7 +15,7 @@ export class Helper {
 	public static httpMethodAnnotationGenerator(httpMethod: string, path?: string): Types.MethodAnnotationReturnType {
 		return (obj: any, name: string, descriptor: PropertyDescriptor): PropertyDescriptor => {
 			Object.defineProperty(obj, name, descriptor);
-			RestAppManager.addMethod(Helper.getClassName(obj), new Method(name, httpMethod, path, descriptor.value, null));
+			RestAppManager.addMethod(Helper.getClassName(obj), new Method(name, httpMethod, path, descriptor.value));
 			return descriptor;
 		};
 	}

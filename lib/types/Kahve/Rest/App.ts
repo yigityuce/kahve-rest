@@ -1,11 +1,14 @@
 import { Controller } from './Controller';
+import { Server } from './Server';
+import { UniqueList } from '../../../internals';
 
 /**
  * Rest application type which will be stored in the global variable.
  * @internal
  */
 export class App {
-	private controllers: Controller[] = [];
+	private controllers: UniqueList<Controller> = new UniqueList<Controller>('name');
+	private servers: UniqueList<Server> = new UniqueList<Server>('name');
 
 	/**
 	 * Retrieves controller with name.
@@ -13,23 +16,14 @@ export class App {
 	 * @param name controller name to be retrieved
 	 */
 	public getController(name: string): Controller {
-		return this.controllers.find(c => c.name === name);
+		return this.controllers.get(name);
 	}
 
 	/**
 	 * Get all controllers defined as a list.
 	 */
 	public getControllers(): Controller[] {
-		return this.controllers;
-	}
-
-	/**
-	 * Checks the controller is in list or not.
-	 *
-	 * @param name controller name
-	 */
-	public isControllerExist(name: string): boolean {
-		return this.controllers.findIndex(c => c.name === name) >= 0;
+		return this.controllers.getAll();
 	}
 
 	/**
@@ -38,33 +32,33 @@ export class App {
 	 * @param c controller
 	 */
 	public addController(c: Controller): this {
-		if (!this.isControllerExist(c.name)) this.insertController(c);
-		else this.updateController(c);
+		this.controllers.add(c);
 		return this;
 	}
 
 	/**
-	 * Inserts controller to the list.
-	 * @param c controller
+	 * Retrieves server with name.
+	 *
+	 * @param name server name to be retrieved
 	 */
-	private insertController(c: Controller): this {
-		if (c instanceof Controller) this.controllers.push(c);
-		return this;
+	public getServer(name: string): Server {
+		return this.servers.get(name);
 	}
 
 	/**
-	 * Updates controller with coping the values.
-	 * @param c controller
+	 * Get all server defined as a list.
 	 */
-	private updateController(c: Controller): this {
-		const foundIndex = this.controllers.findIndex(controller => controller.name === c.name);
+	public getServers(): Server[] {
+		return this.servers.getAll();
+	}
 
-		if (foundIndex >= 0) {
-			Object.entries(c)
-				.filter(([, value]) => value)
-				.forEach(([key, value]) => (this.controllers[foundIndex][key] = value));
-		}
-
+	/**
+	 * Adds server to the list if it is not already in list,
+	 * otherwise updates the properties of existing one.
+	 * @param s server
+	 */
+	public addServer(s: Server): this {
+		this.servers.add(s);
 		return this;
 	}
 }

@@ -2,35 +2,95 @@ import * as express from 'express';
 import * as HttpStatus from 'http-status-codes';
 import { logger } from 'kahve-core';
 import { RestError } from '../RestError';
-import { Method, MethodArgType, IQueryParamConfig, IPathVariableConfig, Controller } from '../types/Kahve/Rest';
 import { RestAppManager } from './RestAppManager';
 import { RequestValidator } from './RequestValidator';
+import { Helper } from './Helper';
+import {
+	Method,
+	MethodArgType,
+	IQueryParamConfig,
+	IPathVariableConfig,
+	Controller,
+	Server,
+	ServerController,
+	ServerConfig,
+	ServerLifecycleMethod,
+	ServerLifecylceMethodType
+} from '../types/Kahve/Rest';
 
 /**
- * Annotation processing implementation of application instance within global scope which is defined by using annotations.
+ * Annotation processing implementation of servers defined within global scope which is defined by using annotations.
  *
  * @internal
  */
 export class DecoratorProcessor {
-	constructor(private app: express.Application) {}
+	constructor() {}
 
 	/**
-	 * Processes the application instance defined in global variable. It registers REST endpoints to the
+	 * Processes the server instance defined in global variable. It registers REST endpoints to the
 	 * express app with wrapped request handler.
+	 * @param srvname server name
+	 * @param expressApp express app instance
 	 */
-	public process(): void {
-		RestAppManager.app()
-			.getControllers()
-			.forEach(controller => {
-				controller.getMethods().forEach(method => {
-					const path = this.generatePath(controller.baseUrl, method.path);
-					const httpMethod = (method.httpMethod || 'UNDEFINED').toLowerCase();
-					if (this.isValidHttpMethod(httpMethod)) {
-						this.app[httpMethod](path, this.generateRequestHandler(method, controller));
-						this.log(controller.name, httpMethod, path, 'Endpoint is registered');
-					}
-				});
+	public static process(srvname: string, expressApp: express.Application): void {
+		return new DecoratorProcessor().process(srvname, expressApp);
+	}
+
+	/**
+	 * Processes the server instance defined in global variable. It registers REST endpoints to the
+	 * express app with wrapped request handler.
+	 * @param srvname server name
+	 * @param expressApp express app instance
+	 */
+	public process(srvname: string, expressApp: express.Application): void {
+		const app = RestAppManager.app();
+		const server = app.getServer(srvname);
+		if (!server) return;
+		if (!server.instance) return;
+		if (!expressApp) return;
+
+		this.updatePropertyValuesFromInstance(server);
+		server.getControllers().forEach(property => {
+			if (!property.value) return;
+
+			const controller = app.getController(Helper.getClassName(property.value));
+			if (!controller) return;
+
+			controller.getMethods().forEach(method => {
+				const path = this.generatePath(controller.baseUrl, method.path);
+				const httpMethod = (method.httpMethod || 'UNDEFINED').toLowerCase();
+				if (typeof expressApp[httpMethod] === 'function') {
+					expressApp[httpMethod](path, this.generateRequestHandler(method, controller));
+					this.log(controller.name, httpMethod, path, 'Endpoint is registered');
+				}
 			});
+		});
+
+		this.callLifecycleMethod(server.getLifecycleMethodByType(ServerLifecylceMethodType.PRESTART), server).finally(() => {
+			expressApp.listen(Number.parseInt(server.getConfigByKey('PORT').value, 10), () => {
+				this.callLifecycleMethod(server.getLifecycleMethodByType(ServerLifecylceMethodType.POSTSTART), server).catch(() => {});
+			});
+		});
+	}
+
+	/**
+	 * Updates properties' values annotated with property annotations in server definition
+	 * @param server server instance
+	 */
+	private updatePropertyValuesFromInstance(server: Server): void {
+		server.getControllers().forEach(controller => {
+			const descriptor = Object.getOwnPropertyDescriptor(server.instance, controller.name);
+			if (!descriptor) {
+				logger.error(`"${controller.name}" named controller in server definition is not instantiated`);
+			} else {
+				server.addController(new ServerController(controller.name, descriptor.value));
+			}
+		});
+
+		server.getConfigs().forEach(config => {
+			const descriptor = Object.getOwnPropertyDescriptor(server.instance, config.name);
+			if (descriptor) server.addConfig(new ServerConfig(config.key, config.name, descriptor.value));
+		});
 	}
 
 	/**
@@ -43,14 +103,6 @@ export class DecoratorProcessor {
 			.split('/')
 			.filter(p => p)
 			.join('/')}`;
-	}
-
-	/**
-	 * Check the http method is able to register to the express app instance
-	 * @param httpMethod requested http method name
-	 */
-	private isValidHttpMethod(httpMethod: string): boolean {
-		return httpMethod in this.app && typeof this.app[httpMethod] === 'function';
 	}
 
 	/**
@@ -93,6 +145,19 @@ export class DecoratorProcessor {
 	 */
 	private callHandler(method: Method, controller: Controller, req: express.Request): any {
 		return typeof method.handler === 'function' && method.handler.apply(controller.instance, this.generateHandlerArgs(method, req));
+	}
+
+	/**
+	 * Calls the handler defined in the lifecycle method if it is a function.
+	 * @param method lifecycle method definition
+	 * @param server server definition
+	 */
+	private callLifecycleMethod(method: ServerLifecycleMethod, server: Server): Promise<any> {
+		if (method && method instanceof ServerLifecycleMethod && typeof method.handler === 'function') {
+			return Promise.resolve(method.handler.apply(server.instance));
+		} else {
+			return Promise.resolve(null);
+		}
 	}
 
 	/**
@@ -174,7 +239,7 @@ export class DecoratorProcessor {
 	}
 
 	/**
-	 * Prints logs.
+	 * Prints log.
 	 * @param cname controller name
 	 * @param mname method name
 	 * @param path request path
