@@ -94,7 +94,7 @@ export class Server {
 	 */
 	public getConfigByKey(key: RestServerConfigTypes): ServerConfig {
 		const configs = this.configs.getAll();
-		return configs.find(c => c.key === key || this.getDefaultConfigs()[key]);
+		return configs.find(c => c.key === key) || this.getDefaultConfigs()[key] || new ServerConfig(key, null, null);
 	}
 
 	/**
@@ -114,7 +114,16 @@ export class Server {
 		return this;
 	}
 
-	private getDefaultConfigs(): ServerConfig[] {
-		return [new ServerConfig('PORT', null, 8080), new ServerConfig('TEST', null, 'Developed for developers')];
+	/**
+	 * Returns the default configs.
+	 */
+	private getDefaultConfigs(): { [key in RestServerConfigTypes]: ServerConfig } {
+		return {
+			PORT: new ServerConfig('PORT', null, 8080),
+			HOST: new ServerConfig('HOST', null, '0.0.0.0'),
+			SECURE: new ServerConfig('SECURE', null, true),
+			CERT: new ServerConfig('CERT', null, null),
+			KEY: new ServerConfig('KEY', null, null)
+		};
 	}
 }

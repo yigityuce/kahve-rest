@@ -3,7 +3,7 @@ import { RestAppManager, Helper } from '../internals';
 import { MethodArg, MethodArgType } from '../types/Kahve/Rest';
 
 /**
- * Method argument annotation to get request headers
+ * Method argument annotation to get all request headers
  *
  * @example
  * ```ts
@@ -21,7 +21,7 @@ import { MethodArg, MethodArgType } from '../types/Kahve/Rest';
  */
 export function RequestHeaders(): Types.ParameterAnnotationReturnType {
 	return (obj: any, func: string, position: number): void => {
-		const arg = new MethodArg(position, MethodArgType.REQUEST_HEADER, {}, false);
+		const arg = new MethodArg(position, MethodArgType.REQUEST_HEADERS, {}, false);
 		RestAppManager.addMethodArg(Helper.getClassName(obj), func, arg);
 	};
 }

@@ -28,4 +28,16 @@ export class Helper {
 		if (obj && obj.constructor && obj.constructor.name) return obj.constructor.name;
 		return 'ANONYMOUS_CLASS';
 	}
+
+	/**
+	 * Concats the pieces to generate full endpoint path.
+	 * @param pieces
+	 */
+	public static generatePath(...pieces: string[]): string {
+		return `/${[...pieces.filter(p => p)]
+			.join('/')
+			.split('/')
+			.filter(p => p)
+			.join('/')}`;
+	}
 }

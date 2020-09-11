@@ -6,118 +6,345 @@
 	},
 	"item": [
 		{
-			"name": "get-list",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "localhost:9000/base/path/get-list",
-					"host": [
-						"localhost"
-					],
-					"port": "9000",
-					"path": [
-						"base",
-						"path",
-						"get-list"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "get-list-with-timeout",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "localhost:9000/base/path/get-list-with-timeout",
-					"host": [
-						"localhost"
-					],
-					"port": "9000",
-					"path": [
-						"base",
-						"path",
-						"get-list-with-timeout"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "add-item",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "yigit"
+			"name": "Non-Secure",
+			"item": [
+				{
+					"name": "get-item",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:9000/base/path/get-item?index=0",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9000",
+							"path": [
+								"base",
+								"path",
+								"get-item"
+							],
+							"query": [
+								{
+									"key": "index",
+									"value": "0"
+								}
+							]
+						}
+					},
+					"response": []
 				},
-				"url": {
-					"raw": "localhost:9000/base/path/add-item",
-					"host": [
-						"localhost"
-					],
-					"port": "9000",
-					"path": [
-						"base",
-						"path",
-						"add-item"
-					]
+				{
+					"name": "get-list",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:9000/base/path/get-list",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9000",
+							"path": [
+								"base",
+								"path",
+								"get-list"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get-list-with-timeout",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:9000/base/path/get-list-with-timeout",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9000",
+							"path": [
+								"base",
+								"path",
+								"get-list-with-timeout"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "add-item",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtZXNzYWdlIjoiTm8gbW9yZSB0YWxrIGJlZm9yZSBjb2ZmZWUifQ.w1AieTWdAFWb1RmavZM4P_OlWLvLC7XF4Lp9nPq8360",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "yigit"
+						},
+						"url": {
+							"raw": "http://localhost:9000/base/path/add-item",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9000",
+							"path": [
+								"base",
+								"path",
+								"add-item"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update-item",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "JOHN"
+						},
+						"url": {
+							"raw": "http://localhost:9000/base/path/update-item/10",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9000",
+							"path": [
+								"base",
+								"path",
+								"update-item",
+								"10"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete-item",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://localhost:9000/base/path/delete-item/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9000",
+							"path": [
+								"base",
+								"path",
+								"delete-item",
+								"1"
+							]
+						}
+					},
+					"response": []
 				}
-			},
-			"response": []
+			],
+			"protocolProfileBehavior": {}
 		},
 		{
-			"name": "update-item",
-			"request": {
-				"method": "PUT",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "JOHN"
+			"name": "Secure",
+			"item": [
+				{
+					"name": "get-item",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://localhost:9001/base/path/get-item?index=0",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "9001",
+							"path": [
+								"base",
+								"path",
+								"get-item"
+							],
+							"query": [
+								{
+									"key": "index",
+									"value": "0"
+								}
+							]
+						}
+					},
+					"response": []
 				},
-				"url": {
-					"raw": "localhost:9000/base/path/update-item/10",
-					"host": [
-						"localhost"
-					],
-					"port": "9000",
-					"path": [
-						"base",
-						"path",
-						"update-item",
-						"10"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "delete-item",
-			"request": {
-				"method": "DELETE",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": ""
+				{
+					"name": "get-list",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://localhost:9001/base/path/get-list",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "9001",
+							"path": [
+								"base",
+								"path",
+								"get-list"
+							]
+						}
+					},
+					"response": []
 				},
-				"url": {
-					"raw": "localhost:9000/base/path/delete-item/1",
-					"host": [
-						"localhost"
-					],
-					"port": "9000",
-					"path": [
-						"base",
-						"path",
-						"delete-item",
-						"1"
-					]
+				{
+					"name": "get-list-with-timeout",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://localhost:9001/base/path/get-list-with-timeout",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "9001",
+							"path": [
+								"base",
+								"path",
+								"get-list-with-timeout"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "add-item",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtZXNzYWdlIjoiTm8gbW9yZSB0YWxrIGJlZm9yZSBjb2ZmZWUifQ.w1AieTWdAFWb1RmavZM4P_OlWLvLC7XF4Lp9nPq8360",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "yigit"
+						},
+						"url": {
+							"raw": "https://localhost:9001/base/path/add-item",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "9001",
+							"path": [
+								"base",
+								"path",
+								"add-item"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update-item",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "JOHN"
+						},
+						"url": {
+							"raw": "https://localhost:9001/base/path/update-item/10",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "9001",
+							"path": [
+								"base",
+								"path",
+								"update-item",
+								"10"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete-item",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "https://localhost:9001/base/path/delete-item/1",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "9001",
+							"path": [
+								"base",
+								"path",
+								"delete-item",
+								"1"
+							]
+						}
+					},
+					"response": []
 				}
-			},
-			"response": []
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "befa53f5-688c-486d-9cea-a72d1d642b2c",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "8c797966-cb53-4e64-a79b-8cb1b02314ad",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			],
+			"protocolProfileBehavior": {}
 		}
 	],
 	"protocolProfileBehavior": {}

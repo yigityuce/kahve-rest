@@ -8,7 +8,8 @@ export enum MethodArgType {
 	QUERY_PARAM = 'QUERY_PARAM',
 	PATH_VARIABLE = 'PATH_VARIABLE',
 	REQUEST_BODY = 'REQUEST_BODY',
-	REQUEST_HEADER = 'REQUEST_HEADER'
+	REQUEST_HEADER = 'REQUEST_HEADER',
+	REQUEST_HEADERS = 'REQUEST_HEADERS'
 }
 
 /**
@@ -30,6 +31,12 @@ export interface IQueryParamConfig extends IArgWithKeyConfig {}
  * @internal
  */
 export interface IPathVariableConfig extends IArgWithKeyConfig {}
+
+/**
+ * Method arg config interface definition for a single header.
+ * @internal
+ */
+export interface IRequestHeaderConfig extends IArgWithKeyConfig {}
 
 /**
  * Method arg config interface definition for request body.
@@ -64,46 +71,5 @@ export class MethodArg {
 	 */
 	public getConfig<T>(): T {
 		return this.config as T;
-	}
-
-	/**
-	 * Updates the config as a query param config.
-	 * @param c config
-	 */
-	public setQueryParamConfig(c: IQueryParamConfig): this {
-		return this.setConfig(c);
-	}
-
-	/**
-	 * Updates the config as a path variable config.
-	 * @param c config
-	 */
-	public setPathVariableConfig(c: IPathVariableConfig): this {
-		return this.setConfig(c);
-	}
-
-	/**
-	 * Updates the config as a request body config.
-	 * @param c config
-	 */
-	public setRequestBodyConfig(c: IRequestBodyConfig): this {
-		return this.setConfig(c);
-	}
-
-	/**
-	 * Updates the config as a request header config.
-	 * @param c config
-	 */
-	public setRequestHeaderConfig(c: IRequestHeadersConfig): this {
-		return this.setConfig(c);
-	}
-
-	/**
-	 * Updates the config.
-	 * @param c config
-	 */
-	private setConfig(c: ConfigTypes): this {
-		this.config = c;
-		return this;
 	}
 }

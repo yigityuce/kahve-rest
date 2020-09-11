@@ -79,6 +79,14 @@
 				<p>kahve-rest runs on Node.js and is available as an NPM package. You can install kahve-rest
 				in your project&#39;s directory as usual:</p>
 				<pre><code class="language-bash">$ npm install kahve-core kahve-rest</code></pre>
+				<p>You should set the &quot;<code>emitDecoratorMetadata</code>&quot; and &quot;<code>experimentalDecorators</code>&quot; config to true in your <strong>tsconfig.json</strong> file.</p>
+				<pre><code class="language-json">{
+   &quot;compilerOptions&quot;: { 
+     ..., 
+     &quot;emitDecoratorMetadata&quot;: true,
+     &quot;experimentalDecorators&quot;: true,
+   } 
+}</code></pre>
 				<a href="#usage" id="usage" style="color: inherit; text-decoration: none;">
 					<h1>Usage</h1>
 				</a>
@@ -97,7 +105,10 @@
   RestServerConfig,
   RestServerController,
   RestServerPreStart,
-  RestServerPostStart
+  RestServerPostStart,
+  HttpStatus,
+  QueryParam,
+  RequestHeader
 } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;kahve-rest&#x27;</span>;
 
 <span class="hljs-comment">// SET LOG LEVEL</span>
@@ -108,6 +119,13 @@ logger.setLevel(LogLevel.DEBUG);
 <span class="hljs-keyword">class</span> TestController {
   <span class="hljs-keyword">private</span> list: <span class="hljs-built_in">string</span>[] = [];
 
+  <span class="hljs-meta">@RestGet</span>(<span class="hljs-string">&#x27;get-item&#x27;</span>)
+  <span class="hljs-keyword">public</span> getItem(<span class="hljs-meta">@QueryParam</span>(<span class="hljs-string">&#x27;index&#x27;</span>) index: <span class="hljs-built_in">number</span>): <span class="hljs-built_in">string</span> {
+    <span class="hljs-keyword">const</span> i = <span class="hljs-built_in">Number</span>.parseInt(<span class="hljs-string">`<span class="hljs-subst">${index}</span>`</span>);
+    <span class="hljs-keyword">if</span> (!<span class="hljs-built_in">this</span>.isValidIndex(i)) <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> RestError(<span class="hljs-string">&#x27;Out of bound.&#x27;</span>, HttpStatus.BAD_REQUEST);
+    <span class="hljs-keyword">return</span> <span class="hljs-built_in">this</span>.list[i];
+  }
+
   <span class="hljs-meta">@RestGet</span>(<span class="hljs-string">&#x27;get-list&#x27;</span>)
   <span class="hljs-keyword">public</span> getAll(): <span class="hljs-built_in">string</span>[] {
     <span class="hljs-keyword">return</span> <span class="hljs-built_in">this</span>.list;
@@ -115,22 +133,21 @@ logger.setLevel(LogLevel.DEBUG);
 
   <span class="hljs-meta">@RestGet</span>(<span class="hljs-string">&#x27;get-list-with-timeout&#x27;</span>)
   <span class="hljs-keyword">public</span> getAllTimeout(): <span class="hljs-built_in">Promise</span>&lt;<span class="hljs-built_in">string</span>[]&gt; {
-    <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">Promise</span>(<span class="hljs-function">(<span class="hljs-params">resolve, reject</span>) =&gt;</span> {
-      <span class="hljs-built_in">setTimeout</span>(<span class="hljs-function">() =&gt;</span> resolve(<span class="hljs-built_in">this</span>.list), <span class="hljs-number">2000</span>);
-    });
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">Promise</span>(<span class="hljs-function"><span class="hljs-params">resolve</span> =&gt;</span> <span class="hljs-built_in">setTimeout</span>(<span class="hljs-function">() =&gt;</span> resolve(<span class="hljs-built_in">this</span>.list), <span class="hljs-number">2000</span>));
   }
 
   <span class="hljs-meta">@RestPost</span>(<span class="hljs-string">&#x27;add-item&#x27;</span>)
-  <span class="hljs-keyword">public</span> createItem(<span class="hljs-meta">@RequestBody</span>() item: <span class="hljs-built_in">string</span>): <span class="hljs-built_in">string</span> {
+  <span class="hljs-keyword">public</span> createItem(<span class="hljs-meta">@RequestBody</span>() item: <span class="hljs-built_in">string</span>, <span class="hljs-meta">@RequestHeader</span>(<span class="hljs-string">&#x27;Authorization&#x27;</span>, <span class="hljs-literal">true</span>) auth: <span class="hljs-built_in">string</span>): <span class="hljs-built_in">string</span> {
     <span class="hljs-built_in">this</span>.list.push(item);
+    logger.info(<span class="hljs-string">&#x27;Auth Token is:&#x27;</span>, auth);
     logger.info(<span class="hljs-string">&#x27;New item added:&#x27;</span>, item);
     <span class="hljs-keyword">return</span> item;
   }
 
   <span class="hljs-meta">@RestPut</span>(<span class="hljs-string">&#x27;update-item/:index&#x27;</span>)
-  <span class="hljs-keyword">public</span> updateItem(<span class="hljs-meta">@RequestBody</span>() item: <span class="hljs-built_in">string</span>, <span class="hljs-meta">@PathVariable</span>(<span class="hljs-string">&#x27;ind&#x27;</span>) ind: <span class="hljs-built_in">number</span>): <span class="hljs-built_in">string</span> {
+  <span class="hljs-keyword">public</span> updateItem(<span class="hljs-meta">@RequestBody</span>() item: <span class="hljs-built_in">string</span>, <span class="hljs-meta">@PathVariable</span>(<span class="hljs-string">&#x27;index&#x27;</span>) ind: <span class="hljs-built_in">number</span>): <span class="hljs-built_in">string</span> {
     <span class="hljs-keyword">const</span> i = <span class="hljs-built_in">Number</span>.parseInt(<span class="hljs-string">`<span class="hljs-subst">${ind}</span>`</span>);
-    <span class="hljs-keyword">if</span> (!<span class="hljs-built_in">this</span>.isValidIndex(i)) <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> RestError(<span class="hljs-string">&#x27;Out of bound.&#x27;</span>, <span class="hljs-number">400</span>);
+    <span class="hljs-keyword">if</span> (!<span class="hljs-built_in">this</span>.isValidIndex(i)) <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> RestError(<span class="hljs-string">&#x27;Out of bound.&#x27;</span>, HttpStatus.BAD_REQUEST);
 
     <span class="hljs-built_in">this</span>.list[i] = item;
     logger.info(<span class="hljs-string">&#x27;Item updated:&#x27;</span>, item);
@@ -140,7 +157,7 @@ logger.setLevel(LogLevel.DEBUG);
   <span class="hljs-meta">@RestDelete</span>(<span class="hljs-string">&#x27;delete-item/:index&#x27;</span>)
   <span class="hljs-keyword">public</span> deleteUser(<span class="hljs-meta">@PathVariable</span>(<span class="hljs-string">&#x27;index&#x27;</span>) index: <span class="hljs-built_in">number</span>): <span class="hljs-built_in">boolean</span> {
     <span class="hljs-keyword">const</span> i = <span class="hljs-built_in">Number</span>.parseInt(<span class="hljs-string">`<span class="hljs-subst">${index}</span>`</span>);
-    <span class="hljs-keyword">if</span> (!<span class="hljs-built_in">this</span>.isValidIndex(i)) <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> RestError(<span class="hljs-string">&#x27;Out of bound.&#x27;</span>, <span class="hljs-number">400</span>);
+    <span class="hljs-keyword">if</span> (!<span class="hljs-built_in">this</span>.isValidIndex(i)) <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> RestError(<span class="hljs-string">&#x27;Out of bound.&#x27;</span>, HttpStatus.BAD_REQUEST);
 
     <span class="hljs-keyword">const</span> deletedItem = <span class="hljs-built_in">this</span>.list.splice(i, <span class="hljs-number">1</span>);
     logger.info(<span class="hljs-string">&#x27;Item deleted:&#x27;</span>, deletedItem);
@@ -168,11 +185,41 @@ logger.setLevel(LogLevel.DEBUG);
 
   <span class="hljs-meta">@RestServerPostStart</span>()
   <span class="hljs-keyword">private</span> postStart(): <span class="hljs-built_in">void</span> {
-    logger.info(<span class="hljs-string">`App is started. Port: <span class="hljs-subst">${<span class="hljs-built_in">this</span>.port}</span> Log level: <span class="hljs-subst">${logger.getLevel()}</span>`</span>);
+    logger.info(<span class="hljs-string">`Server is started. Port: <span class="hljs-subst">${<span class="hljs-built_in">this</span>.port}</span> Log level: <span class="hljs-subst">${logger.getLevel()}</span>`</span>);
   }
 }
 
-<span class="hljs-keyword">const</span> publicServer = <span class="hljs-keyword">new</span> PublicServer();</code></pre>
+<span class="hljs-meta">@RestServer</span>()
+<span class="hljs-keyword">class</span> SecureServer {
+  <span class="hljs-meta">@RestServerConfig</span>(<span class="hljs-string">&#x27;PORT&#x27;</span>)
+  <span class="hljs-keyword">private</span> port: <span class="hljs-built_in">number</span> = <span class="hljs-number">9001</span>;
+
+  <span class="hljs-meta">@RestServerConfig</span>(<span class="hljs-string">&#x27;KEY&#x27;</span>)
+  <span class="hljs-keyword">private</span> keyFile: <span class="hljs-built_in">string</span> = <span class="hljs-string">&#x27;./key.pem&#x27;</span>;
+
+  <span class="hljs-meta">@RestServerConfig</span>(<span class="hljs-string">&#x27;CERT&#x27;</span>)
+  <span class="hljs-keyword">private</span> certFile: <span class="hljs-built_in">string</span> = <span class="hljs-string">&#x27;./cert.pem&#x27;</span>;
+
+  <span class="hljs-meta">@RestServerConfig</span>(<span class="hljs-string">&#x27;SECURE&#x27;</span>)
+  <span class="hljs-keyword">private</span> isSecure: <span class="hljs-built_in">boolean</span> = <span class="hljs-literal">true</span>;
+
+  <span class="hljs-meta">@RestServerController</span>()
+  <span class="hljs-keyword">private</span> testController: TestController = <span class="hljs-keyword">new</span> TestController();
+
+  <span class="hljs-meta">@RestServerPreStart</span>()
+  <span class="hljs-keyword">private</span> preStart(): <span class="hljs-built_in">Promise</span>&lt;<span class="hljs-built_in">void</span>&gt; {
+    logger.info(<span class="hljs-string">&#x27;Do some preparing steps in here and also you can do async operations.&#x27;</span>);
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">Promise</span>(<span class="hljs-function"><span class="hljs-params">resolve</span> =&gt;</span> <span class="hljs-built_in">setTimeout</span>(<span class="hljs-function">() =&gt;</span> resolve(<span class="hljs-literal">null</span>), <span class="hljs-number">1500</span>));
+  }
+
+  <span class="hljs-meta">@RestServerPostStart</span>()
+  <span class="hljs-keyword">private</span> postStart(): <span class="hljs-built_in">void</span> {
+    logger.info(<span class="hljs-string">`Secure server is started. Port: <span class="hljs-subst">${<span class="hljs-built_in">this</span>.port}</span> Log level: <span class="hljs-subst">${logger.getLevel()}</span>`</span>);
+  }
+}
+
+<span class="hljs-keyword">const</span> publicServer = <span class="hljs-keyword">new</span> PublicServer();
+<span class="hljs-keyword">const</span> secureServer = <span class="hljs-keyword">new</span> SecureServer();</code></pre>
 			</div>
 		</div>
 		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
@@ -199,6 +246,9 @@ logger.setLevel(LogLevel.DEBUG);
 					</li>
 					<li class=" tsd-kind-function">
 						<a href="globals.html#requestbody" class="tsd-kind-icon">Request<wbr>Body</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#requestheader" class="tsd-kind-icon">Request<wbr>Header</a>
 					</li>
 					<li class=" tsd-kind-function">
 						<a href="globals.html#requestheaders" class="tsd-kind-icon">Request<wbr>Headers</a>
