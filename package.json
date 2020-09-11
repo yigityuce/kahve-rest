@@ -1,6 +1,6 @@
 {
 	"name": "kahve-rest",
-	"version": "0.0.0-1",
+	"version": "0.0.2",
 	"description": "",
 	"main": "dist/index.js",
 	"types": "dist/index.d.ts",
@@ -28,10 +28,9 @@
 	"dependencies": {
 		"cors": "^2.8.5",
 		"express": "^4.17.1",
+		"helmet": "^4.1.0",
 		"http-status-codes": "^1.4.0",
-		"kahve-core": "0.0.2",
-		"rimraf": "^3.0.2",
-		"tslib": "^1.9.0"
+		"kahve-core": "0.0.2"
 	},
 	"devDependencies": {
 		"@types/cors": "^2.8.6",
@@ -48,7 +47,9 @@
 		"eslint-plugin-promise": "^4.2.1",
 		"eslint-plugin-standard": "^4.0.1",
 		"prettier": "^2.0.5",
+		"rimraf": "^3.0.2",
 		"ts-node": "~7.0.0",
+		"tslib": "^1.9.0",
 		"tslint": "^5.15.0",
 		"tslint-config-prettier": "^1.18.0",
 		"tslint-loader": "^3.5.4",

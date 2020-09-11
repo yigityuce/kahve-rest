@@ -1,5 +1,5 @@
 import { ErrorResponse } from 'kahve-core';
-import * as HttpStatus from 'http-status-codes';
+import { HttpStatus } from './HttpStatus';
 
 /**
  * Custom error implementation for REST api error which can be used.

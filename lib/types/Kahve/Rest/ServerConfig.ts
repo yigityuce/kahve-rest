@@ -3,7 +3,7 @@ import { RestAppManager } from '../../../internals';
 /**
  * Possible server config types.
  */
-export type RestServerConfigTypes = 'PORT' | 'TEST';
+export type RestServerConfigTypes = 'PORT' | 'HOST' | 'SECURE' | 'CERT' | 'KEY';
 
 /**
  * Server config type which will be stored in the server.

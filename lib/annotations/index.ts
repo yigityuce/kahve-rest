@@ -1,6 +1,7 @@
 export * from './PathVariable';
 export * from './QueryParam';
 export * from './RequestBody';
+export * from './RequestHeader';
 export * from './RequestHeaders';
 export * from './RestController';
 export * from './RestDelete';

@@ -1,7 +1,7 @@
-import { Method, MethodArgType, MethodArg, IQueryParamConfig } from '../types/Kahve/Rest';
+import { Method, MethodArgType, MethodArg, IQueryParamConfig, IRequestHeaderConfig } from '../types/Kahve/Rest';
 import { RestError } from '../RestError';
+import { HttpStatus } from '../HttpStatus';
 import * as express from 'express';
-import * as HttpStatus from 'http-status-codes';
 
 /**
  * HTTP request validator implementation.
@@ -19,7 +19,8 @@ export class RequestValidator {
 	public validate(): void {
 		this.method.getArgs().forEach(arg => {
 			if (arg.type === MethodArgType.QUERY_PARAM) this.validateQueryParam(arg);
-			if (arg.type === MethodArgType.REQUEST_BODY) this.validateRequestBody(arg);
+			else if (arg.type === MethodArgType.REQUEST_BODY) this.validateRequestBody(arg);
+			else if (arg.type === MethodArgType.REQUEST_HEADER) this.validateRequestHeader(arg);
 		});
 	}
 
@@ -45,5 +46,19 @@ export class RequestValidator {
 	private validateRequestBody(arg: MethodArg): void {
 		if (!arg.required) return;
 		if (!this.request.body) throw new RestError(`Missing required request body`, HttpStatus.BAD_REQUEST);
+	}
+
+	/**
+	 * Checks the request header in the http request and fails if the header is required and it is not sent via request
+	 *
+	 * @throws RestError if validation fails
+	 */
+	private validateRequestHeader(arg: MethodArg): void {
+		if (!arg.required) return;
+
+		const requestHeaderKey = arg.getConfig<IRequestHeaderConfig>().key;
+		if (this.request.header(requestHeaderKey) === undefined) {
+			throw new RestError(`Missing required request header [${requestHeaderKey}]`, HttpStatus.BAD_REQUEST);
+		}
 	}
 }

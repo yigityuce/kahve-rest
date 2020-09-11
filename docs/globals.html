@@ -85,6 +85,7 @@
 								<li class="tsd-kind-function"><a href="globals.html#pathvariable" class="tsd-kind-icon">Path<wbr>Variable</a></li>
 								<li class="tsd-kind-function"><a href="globals.html#queryparam" class="tsd-kind-icon">Query<wbr>Param</a></li>
 								<li class="tsd-kind-function"><a href="globals.html#requestbody" class="tsd-kind-icon">Request<wbr>Body</a></li>
+								<li class="tsd-kind-function"><a href="globals.html#requestheader" class="tsd-kind-icon">Request<wbr>Header</a></li>
 								<li class="tsd-kind-function"><a href="globals.html#requestheaders" class="tsd-kind-icon">Request<wbr>Headers</a></li>
 								<li class="tsd-kind-function"><a href="globals.html#restcontroller" class="tsd-kind-icon">Rest<wbr>Controller</a></li>
 								<li class="tsd-kind-function"><a href="globals.html#restdelete" class="tsd-kind-icon">Rest<wbr>Delete</a></li>
@@ -106,7 +107,7 @@
 				<section class="tsd-panel tsd-member tsd-kind-type-alias">
 					<a name="restserverconfigtypes" class="tsd-anchor"></a>
 					<h3>Rest<wbr>Server<wbr>Config<wbr>Types</h3>
-					<div class="tsd-signature tsd-kind-icon">Rest<wbr>Server<wbr>Config<wbr>Types<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">"PORT"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"TEST"</span></div>
+					<div class="tsd-signature tsd-kind-icon">Rest<wbr>Server<wbr>Config<wbr>Types<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">"PORT"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"HOST"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"SECURE"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"CERT"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"KEY"</span></div>
 					<aside class="tsd-sources">
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -254,6 +255,48 @@
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-function">
+					<a name="requestheader" class="tsd-anchor"></a>
+					<h3>Request<wbr>Header</h3>
+					<ul class="tsd-signatures tsd-kind-function">
+						<li class="tsd-signature tsd-kind-icon">Request<wbr>Header<span class="tsd-signature-symbol">(</span>key<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, required<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Types.ParameterAnnotationReturnType</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Method argument annotation to get a single request header</p>
+								</div>
+								<dl class="tsd-comment-tags">
+									<dt>example</dt>
+									<dd><pre><code class="language-ts"><span class="hljs-meta">@RestController</span>(<span class="hljs-string">&#x27;base/url&#x27;</span>)
+<span class="hljs-keyword">class</span> MyController {
+
+  <span class="hljs-meta">@RestPost</span>(<span class="hljs-string">&#x27;auth&#x27;</span>)
+  <span class="hljs-keyword">public</span> auth(<span class="hljs-meta">@RequestHeader</span>(<span class="hljs-string">&#x27;Authorization&#x27;</span>, <span class="hljs-literal">true</span>) authHeader: <span class="hljs-built_in">string</span>): <span class="hljs-built_in">void</span> {
+     <span class="hljs-built_in">console</span>.log(<span class="hljs-string">&#x27;Auth header is:&#x27;</span>, authHeader);
+     <span class="hljs-comment">// Request Path: &quot;POST base/url/auth&quot;</span>
+     <span class="hljs-comment">// Expected Output: &quot;Auth header is: &quot;Bearer xyz&quot;</span>
+  }
+}</code></pre>
+									</dd>
+								</dl>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>key: <span class="tsd-signature-type">string</span></h5>
+								</li>
+								<li>
+									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> required: <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> = false</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Types.ParameterAnnotationReturnType</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-function">
 					<a name="requestheaders" class="tsd-anchor"></a>
 					<h3>Request<wbr>Headers</h3>
 					<ul class="tsd-signatures tsd-kind-function">
@@ -265,7 +308,7 @@
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Method argument annotation to get request headers</p>
+									<p>Method argument annotation to get all request headers</p>
 								</div>
 								<dl class="tsd-comment-tags">
 									<dt>example</dt>
@@ -662,6 +705,9 @@
 					</li>
 					<li class=" tsd-kind-function">
 						<a href="globals.html#requestbody" class="tsd-kind-icon">Request<wbr>Body</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#requestheader" class="tsd-kind-icon">Request<wbr>Header</a>
 					</li>
 					<li class=" tsd-kind-function">
 						<a href="globals.html#requestheaders" class="tsd-kind-icon">Request<wbr>Headers</a>
